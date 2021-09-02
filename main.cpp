@@ -63,11 +63,6 @@ public:
         }
     }
 
-    void Insert(Person p)
-    {
-        Insert(root, p);
-    }
-
     void Find(string fname, string lname) // Finds person by fname and lname and prints all data
     {
         Node* curr = root;
@@ -109,11 +104,6 @@ public:
         Print(n->right);
     }
 
-    void Print()
-    {
-        Print(root);
-    }
-
     void Zip(Node* n, int zip) // prints all names of people living in a certain zipcode
     {
         if (n == NULL)
@@ -126,11 +116,6 @@ public:
         Zip(n->right, zip);
 
         // cout << "Could not find person with zipcode " << zip << "\n";
-    }
-
-    void Zip(int zip)
-    {
-        Zip(root, zip);
     }
 
     void Oldest(Node* n) // prints the name of the oldest person with their date of birth
@@ -170,9 +155,39 @@ public:
         cout << "The oldest person is " << oldest.fname << " " << oldest.lname << " born on " << oldest.dob << "\n";
     }
 
+    void Print()
+    {
+        Print(root);
+    }
+
+    void Remove(Node* n, string fname, string lname)
+    {
+        if (n == NULL)
+            return;
+        if (n->left == NULL && n->right == NULL)
+        {
+
+        }
+    }
+
+    void Insert(Person p)
+    {
+        Insert(root, p);
+    }
+
+    void Zip(int zip)
+    {
+        Zip(root, zip);
+    }
+
     void Oldest()
     {
         Oldest(root);
+    }
+
+    void Remove(string fname, string lname)
+    {
+        Remove(root, fname, lname);
     }
 };
 
@@ -227,7 +242,7 @@ int main()
     {
         string command;
         Person x;
-        cout << "Available commands: find, zip, print, oldest, exit \n";
+        cout << "Available commands: find, zip, print, oldest, remove, exit \n";
         cin >> command;
         if (command == "find" || command == "Find")
         {
@@ -251,7 +266,7 @@ int main()
         {
 
         }
-        else if (command == "delete" || command == "Delete")
+        else if (command == "remove" || command == "Remove")
         {
 
         }
