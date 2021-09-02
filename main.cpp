@@ -155,11 +155,6 @@ public:
         cout << "The oldest person is " << oldest.fname << " " << oldest.lname << " born on " << oldest.dob << "\n";
     }
 
-    void Print()
-    {
-        Print(root);
-    }
-
     void Remove(Node* n, string fname, string lname)
     {
         if (n == NULL)
@@ -173,6 +168,11 @@ public:
     void Insert(Person p)
     {
         Insert(root, p);
+    }
+    
+    void Print()
+    {
+        Print(root);
     }
 
     void Zip(int zip)
