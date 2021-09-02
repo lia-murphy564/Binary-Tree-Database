@@ -159,17 +159,129 @@ public:
     {
         if (n == NULL)
             return;
-        if (n->left == NULL && n->right == NULL)
+        else if (lname < n->data.lname)
+            Remove(n->left, fname, lname);
+        else if (lname > n->data.lname)
+            Remove(n->right, fname, lname);
+        else
         {
+            if (n->right == NULL && n->left == NULL)
+            {
+                //delete n;
+                n = NULL;
+            }
+            else if (n->left == NULL)
+                n = n->right;
+            else if (n->right == NULL)
+                n = n->left;
+            else
+            {
+                Person p = 
+            }
 
+
+            if (n->right == NULL)
+            {
+                Node* temp = n->left;
+                delete n;
+                n = temp;
+                cout << n->data.lname << "\n";
+            }
+            else if (n->left == NULL)
+            {
+                Node* temp = n->right;
+                delete n;
+                n = temp;
+                cout << n->data.lname << "\n";
+            }
+            else
+            {
+                Node* smallest = FindSmallestNode(n->right);
+                n->data = smallest->data;
+                Remove(n->right, smallest->data.fname, smallest->data.lname);
+
+                //Node* biggest = FindBiggestNode(n->left);
+                //n->data = biggest->data;
+                //n->left = Remove(n->left, biggest->data.fname, biggest->data.lname);
+
+
+            }
+
+
+
+            //else
+            //{
+            //    // replace node with biggest node that is less --- or --- lesser node that is bigger
+
+            //    // find and delete the rightmost node in the left subtree
+            //    Node* biggest = FindRightNode(n->left, lname);
+            //    biggest->data = n->data;
+            //    delete biggest;
+
+            //    // find and delete the leftmost node in the right subtree
+            //    Node* smallest = FindLeftNode(n->right, lname);
+            //    smallest->data = n->data;
+            //    delete smallest;
+
+            //}
         }
+
+        //1. Starting at the root, find the deepest and rightmost node in binary tree and node which we want to delete. 
+        //2. Replace the deepest rightmost node’s data with the node to be deleted.
+          //  3. Then delete the deepest rightmost node.
+    }
+
+    Person FindSmallestNode(Node* n)
+    {
+        FindSmallestNode(n->left);
+
+    }
+
+
+    Node* FindBiggestNode(Node* n)
+    {
+        while (n->right != NULL)
+        {
+            n = n->left;
+        }
+        return n;
+    }
+
+    Node* FindRightNode(Node*& n, string s)
+    {
+        // move to the right until the node doesnt have a right
+        // return the node
+
+        if (n == NULL)
+            return NULL;
+        else if (s > n->data.lname)
+            return FindRightNode(n->right, s);
+        else if (n->right == NULL)
+            return n;
+
+        return n;
+    }
+
+    Node* FindLeftNode(Node*& n, string s)
+    {
+        // move to the left until the node doesnt have a left
+        // return the node
+
+        if (n == NULL)
+            return NULL;
+        else if (s < n->data.lname)
+            return FindLeftNode(n->left, s);
+        else if (n->right == NULL)
+            return n;
+
+        return n;
     }
 
     void Insert(Person p)
     {
         Insert(root, p);
     }
-    
+
     void Print()
     {
         Print(root);
@@ -268,7 +380,8 @@ int main()
         }
         else if (command == "remove" || command == "Remove")
         {
-
+            cin >> x.fname >> x.lname;
+            t.Remove(x.fname, x.lname);
         }
         else if (command == "help" || command == "Help")
         {
