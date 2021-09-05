@@ -155,109 +155,83 @@ public:
         cout << "The oldest person is " << oldest.fname << " " << oldest.lname << " born on " << oldest.dob << "\n";
     }
 
-    void Remove(Node* n, string fname, string lname)
+    void RemoveNode(Node* n, string fname, string lname)
     {
         if (n == NULL)
             return;
+
         else if (lname < n->data.lname)
-        {
-            if (fname < n->data.fname)
-                Remove(n->left, fname, lname);
-            else
-                Remove(n->right, fname, lname);
-        }
-
+            RemoveNode(n->left, fname, lname);
         else if (lname > n->data.lname)
+            RemoveNode(n->right, fname, lname);
+        else if (lname == n->data.lname)
         {
-            if (fname > n->data.fname)
-                Remove(n->left, fname, lname);
+            if (fname == n->data.fname)
+            {
+                if (n->left == NULL && n->right == NULL)
+                {
+                    n = NULL;
+                }
+                else if (n->left == NULL)
+                {
+                    n = n->right;
+                }
+                else if (n->right = NULL)
+                {
+                    n = n->left;
+                }
+                else
+                {
+                    Person temp = FindMaxPerson(n->left);
+                    n->data = temp;
+                }
+            }
+            else if (fname < n->data.fname)
+                RemoveNode(n->left, fname, lname);
             else
-                Remove(n->right, fname, lname);
+                RemoveNode(n->right, fname, lname);
         }
-        else //remove
-        {
-            // case if node has no left or no right
-            if (n->right == NULL && n->left == NULL)
-            {
-                delete n;
-                n = NULL;
-                return;
-            }
-            // case if node has only one child
-            else if (n->left == NULL)
-            {
-                Node* temp = n->right;
-                delete n;
-                n = temp;
-                cout << ""; 
-                
-            }
-            else if (n->right == NULL)
-            {
-                Node* temp = n->left;
-                delete n;
-                n = temp;
-                
-            }
-            // case if node has two children
-            // find the minimum value node of the right child
-            // copy min value node's contents into temp
-            // delete n
-            // set n to temp
-            else
-            {
-                Node* temp = NULL;
-                temp = FindMaxNode(n);
-                cout << temp->data.fname << " " << temp->data.lname << "\n";
-                cout << n->data.fname << " " << n->data.lname << "\n";
-                //delete n;
-                //n->data = temp->data;
-         
-                //Remove(n->right, temp->data.fname, temp->data.lname);
-            }
-        }
+        else
+            cout << "no person!";
     }
-        //1. Starting at the root, find the deepest and rightmost node in binary tree and node which we want to delete. 
-        //2. Replace the deepest rightmost node’s data with the node to be deleted.
-          //  3. Then delete the deepest rightmost node
 
-    //Node* FindMinValueNode(Node*& n)
-    //{
-    //    Person min;
-    //    Node* minNode = n;
-    //    Node* curr = n;
-    //    while (curr != NULL)
-    //    {
-
-    //        if (n->data.lname < curr->data.lname)
-    //        {
-    //            if (n->data.fname < curr->data.fname)
-    //                min = n->data;
-    //            curr = curr->left;
-    //        }
-    //        else if (n->data.lname > curr->data.lname)
-    //        {
-    //            if (n->data.fname < curr->data.fname)
-    //                min = n->data;
-    //            curr = curr->right;
-    //        }
-    //        else
-    //        {
-    //            if (n->data.fname < curr->data.fname)
-    //            {
-    //                min = n->data;
-    //                curr = curr->left;
-    //            }
-    //            else
-    //            {
-    //                min = n->data;
-    //                curr = curr->right;
-    //            }
-    //        }
-    //    }
-    //    minNode->data = min;
-    //    return minNode;
-    //}
+    Person FindMaxPerson(Node* n) // prints the name of the oldest person with their date of birth
+    {
+        Person oldest = n->data;
+        Node* curr = n;
+        while (curr != NULL)
+        {
+            if (oldest.lname < curr->data.lname)
+            {
+                if (oldest.dob < curr->data.dob)
+                    oldest = n->data;
+                curr = curr->left;
+            }
+            else if (oldest.lname > curr->data.lname)
+            {
+                if (oldest.dob < curr->data.dob)
+                    oldest = n->data;
+                curr = curr->right;
+            }
+            else
+            {
+                if (oldest.fname < curr->data.fname)
+                {
+                    if (oldest.dob < n->data.dob)
+                        oldest = n->data;
+                    curr = curr->left;
+                }
+                else
+                {
+                    if (oldest.dob < n->data.dob)
+                        oldest = n->data;
+                    curr = curr->right;
+                }
+            }
+        }
+        return oldest;
+        cout << "The oldest person is " << oldest.fname << " " << oldest.lname << " born on " << oldest.dob << "\n";
+    }
 
     Node* FindMaxNode(Node*& n)
     {
@@ -280,64 +254,15 @@ public:
                     curr = curr->right;
             }
             else
+            {
+                cout << curr->data.fname << curr->data.lname;
                 return curr;
+            }
 
         }
 
     }
 
-    //Person FindMaxNode(Node* n)
-    //{
-    //    if (n == NULL)
-    //        return n->data;
-    //    Person result = n->data;
-
-    //    if (FindMaxNode(n->left).lname > result.lname)
-    //        result = FindMaxNode(n->left);
-    //    if (FindMaxNode(n->right).lname > result.lname)
-    //        result = FindMaxNode(n->right);
-    //    return result;
-    //}  
-
-
-    //Node* FindBiggestNode(Node* n)
-    //{
-    //    while (n->right != NULL)
-    //    {
-    //        n = n->left;
-    //    }
-    //    return n;
-    //}
-
-    //Node* FindRightNode(Node*& n, string s)
-    //{
-    //    // move to the right until the node doesnt have a right
-    //    // return the node
-
-    //    if (n == NULL)
-    //        return NULL;
-    //    else if (s > n->data.lname)
-    //        return FindRightNode(n->right, s);
-    //    else if (n->right == NULL)
-    //        return n;
-
-    //    return n;
-    //}
-
-    //Node* FindLeftNode(Node*& n, string s)
-    //{
-    //    // move to the left until the node doesnt have a left
-    //    // return the node
-
-    //    if (n == NULL)
-    //        return NULL;
-    //    else if (s < n->data.lname)
-    //        return FindLeftNode(n->left, s);
-    //    else if (n->right == NULL)
-    //        return n;
-
-    //    return n;
-    //}
 
     void Insert(Person p)
     {
@@ -359,9 +284,9 @@ public:
         Oldest(root);
     }
 
-    void Remove(string fname, string lname)
+    void RemoveNode(string fname, string lname)
     {
-        Remove(root, fname, lname);
+        RemoveNode(root, fname, lname);
     }
 };
 
@@ -443,7 +368,7 @@ int main()
         else if (command == "remove" || command == "Remove")
         {
             cin >> x.fname >> x.lname;
-            t.Remove(x.fname, x.lname);
+            t.RemoveNode(x.fname, x.lname);
         }
         else if (command == "help" || command == "Help")
         {
@@ -460,3 +385,210 @@ int main()
         }
     }
 }
+
+
+//Person FindMaxNode(Node* n)
+//{
+//    if (n == NULL)
+//        return n->data;
+//    Person result = n->data;
+
+//    if (FindMaxNode(n->left).lname > result.lname)
+//        result = FindMaxNode(n->left);
+//    if (FindMaxNode(n->right).lname > result.lname)
+//        result = FindMaxNode(n->right);
+//    return result;
+//}  
+
+
+//Node* FindBiggestNode(Node* n)
+//{
+//    while (n->right != NULL)
+//    {
+//        n = n->left;
+//    }
+//    return n;
+//}
+
+//Node* FindRightNode(Node*& n, string s)
+//{
+//    // move to the right until the node doesnt have a right
+//    // return the node
+
+//    if (n == NULL)
+//        return NULL;
+//    else if (s > n->data.lname)
+//        return FindRightNode(n->right, s);
+//    else if (n->right == NULL)
+//        return n;
+
+//    return n;
+//}
+
+//Node* FindLeftNode(Node*& n, string s)
+//{
+//    // move to the left until the node doesnt have a left
+//    // return the node
+
+//    if (n == NULL)
+//        return NULL;
+//    else if (s < n->data.lname)
+//        return FindLeftNode(n->left, s);
+//    else if (n->right == NULL)
+//        return n;
+
+//    return n;
+//}
+
+    //void Remove(Node* n, string fname, string lname)
+    //{
+    //    if (n == NULL)
+    //        return;
+    //    else if (lname < n->data.lname)
+    //    {
+    //        if (fname < n->data.fname)
+    //            Remove(n->left, fname, lname);
+    //        else
+    //            Remove(n->right, fname, lname);
+    //    }
+
+    //    else if (lname > n->data.lname)
+    //    {
+    //        if (fname > n->data.fname)
+    //            Remove(n->left, fname, lname);
+    //        else
+    //            Remove(n->right, fname, lname);
+    //    }
+    //    else //remove
+    //    {
+    //        // case if node has no left or no right
+    //        if (n->right == NULL && n->left == NULL)
+    //        {
+    //            delete n;
+    //            n = NULL;
+    //            return;
+    //        }
+    //        // case if node has only one child
+    //        else if (n->left == NULL)
+    //        {
+    //            Node* temp = n->right;
+    //            delete n;
+    //            n = temp;
+    //            cout << ""; 
+    //            
+    //        }
+    //        else if (n->right == NULL)
+    //        {
+    //            Node* temp = n->left;
+    //            delete n;
+    //            n = temp;
+    //            
+    //        }
+    //        // case if node has two children
+    //        // find the minimum value node of the right child
+    //        // copy min value node's contents into temp
+    //        // delete n
+    //        // set n to temp
+    //        else
+    //        {
+    //            Node* temp = NULL;
+    //            Node* oldest = NULL;
+    //            oldest = FindMaxNode(n->right);
+    //            n->data = oldest->data;
+    //            Remove(oldest, oldest->data.fname, oldest->data.lname);
+    //            //cout << oldest->data.fname << " " << oldest->data.lname << "\n";
+    //            //cout << n->data.fname << " " << n->data.lname << "\n";
+    //            //n = NULL;
+    //            //n->data = oldest->data;
+    //            //delete oldest;
+    //     
+    //            //Remove(n->right, oldest->data.fname, temp->data.lname);
+    //        }
+    //    }
+
+
+    //void Remove(Node*& n, string fname, string lname) {
+    //    if (n == NULL)
+    //        return;
+    //    else if (lname < n->data.lname)
+    //        Remove(n->left, fname, lname);
+    //    else if (lname > n->data.lname)
+    //        Remove(n->right, fname, lname);
+    //    else if (lname == n->data.lname) {
+    //        if (fname == n->data.fname) {
+    //            if (n->left == NULL && n->right == NULL) {
+    //                n = NULL;
+    //                cout << "Deleted person! Node had no leaves!\n";
+    //            }
+    //            else if (n->left == NULL) {
+    //                n = n->right;
+    //                cout << "Deleted person! Node had right leaf!\n";
+    //            }
+    //            else if (n->right == NULL) {
+    //                n = n->left;
+    //                cout << "Deleted person! Node had left leaf!\n";
+    //            }
+    //            else {
+    //                Node* node = FindMaxNode(n->left);
+    //                Person p = node->data;
+    //                n->data = p;
+    //                cout << "Deleted person! Node had 2 leaves!\n";
+    //            }
+    //        }
+    //        else if (fname < n->data.fname)
+    //            Remove(n->left, fname, lname);
+    //        else
+    //            Remove(n->right, fname, lname);
+    //    }
+    //    else
+    //        cout << "No such person exists!\n";
+
+    //}
+
+    //void Remove(string fname, string lname) {
+    //    cout << "Started delete process\n";
+    //    Remove(root, fname, lname);
+    //}
+
+
+        //1. Starting at the root, find the deepest and rightmost node in binary tree and node which we want to delete. 
+        //2. Replace the deepest rightmost node’s data with the node to be deleted.
+          //  3. Then delete the deepest rightmost node
+
+    //Node* FindMinValueNode(Node*& n)
+    //{
+    //    Person min;
+    //    Node* minNode = n;
+    //    Node* curr = n;
+    //    while (curr != NULL)
+    //    {
+
+    //        if (n->data.lname < curr->data.lname)
+    //        {
+    //            if (n->data.fname < curr->data.fname)
+    //                min = n->data;
+    //            curr = curr->left;
+    //        }
+    //        else if (n->data.lname > curr->data.lname)
+    //        {
+    //            if (n->data.fname < curr->data.fname)
+    //                min = n->data;
+    //            curr = curr->right;
+    //        }
+    //        else
+    //        {
+    //            if (n->data.fname < curr->data.fname)
+    //            {
+    //                min = n->data;
+    //                curr = curr->left;
+    //            }
+    //            else
+    //            {
+    //                min = n->data;
+    //                curr = curr->right;
+    //            }
+    //        }
+    //    }
+    //    minNode->data = min;
+    //    return minNode;
+    //}
